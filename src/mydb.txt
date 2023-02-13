@@ -1,0 +1,11 @@
+CREATE DATABASE mydb
+USE DATABASE mydb
+CREATE TABLE mytable(id: int, name: str, age: int)
+
+// everything bellow is made on new run.
+USE DATABASE mydb
+ADD mytable VALUES (
+(1, gosheto, 17)
+);
+
+// everything bellow is made on new run.
