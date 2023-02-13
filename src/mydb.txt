@@ -9,3 +9,32 @@ ADD mytable VALUES (
 );
 
 // everything bellow is made on new run.
+USE DATABASE mydb
+CREATE FILE myfile
+
+// everything bellow is made on new run.
+USE DATABASE mydb
+WRITE IN myfile:
+Everything is alright.
+I love to write in files!
+The End of This;;;
+
+
+GET ALL mytable
+
+ADD mytable VALUES (
+(5, dimko, 17)
+);
+
+
+GET FILE myfile
+CREATE DATABASE DELETEABLE
+CREATE TABLE deletble(id: int)
+CREATE FILE file
+DROP DB deleteable
+DROP TABLE file
+DROP TABLE deletble
+DEL FILE file
+END
+
+// everything bellow is made on new run.

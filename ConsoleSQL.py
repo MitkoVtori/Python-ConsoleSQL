@@ -1,4 +1,5 @@
 import os
+import shutil
 import errors
 
 
@@ -136,23 +137,16 @@ def write_in_file(database, file, *content):
     return f"Database \"{database}\" or File \"{file}\" not found!"
 
 
-def check_table_content(database, table, *border):
+def check_table_content(database, table, *args):
     '''
         Console command
-
-        without border: GET ALL TableName
-        with border: GET 3 TableName # border equals 3, gets the first three lines
+        GET ALL TableName
     '''
 
     if os.path.exists(f"databases/{database}/tables/{table}.txt"):
         file = open(f"databases/{database}/tables/{table}.txt", "r")
 
-        if border:
-            if type(border[0]) is int:
-                if border[0] < len([line for line in file]):
-                    return [line for line in file[3:border[0]+4]]
-
-        return [line for line in file[3:]]
+        return [line for line in file][2:]
 
     print("Table not found!")
     return []
@@ -161,18 +155,11 @@ def check_table_content(database, table, *border):
 def check_file_content(database, file_name, *border):
     '''
         Console command
-
-        without border: GET FILE FileName
-        with border: GET FILE FileName 3 # border equals 3, gets the first three lines
+        GET FILE FileName
     '''
 
     if os.path.exists(f"databases/{database}/files/{file_name}.txt"):
-        file = open(f"databases/{database}/tables/{file_name}.txt", "r")
-
-        if border:
-            if type(border[0]) is int:
-                if border[0] < len([line for line in file]):
-                    return [line for line in file[:border[0] + 1]]
+        file = open(f"databases/{database}/files/{file_name}.txt", "r")
 
         return [line for line in file]
 
@@ -195,7 +182,7 @@ def drop_database(*databases):
 
     for db in databases:
         if os.path.exists(f"databases/{db}/"):
-            os.remove(f"databases/{db}/")
+            shutil.rmtree(f"databases/{db}/")
 
     return "Database/s dropped!"
 
@@ -247,6 +234,21 @@ def code_saver(user_input, code_file, new_line):
 
 
 def run_program():
+    while True:
+        db = input("create or use database: ")
+
+        if db == 'create':
+            create_db = input("database name: ")
+            create_database(create_db)
+            d = use_database(create_db)
+            break
+
+        elif db == "use":
+            d = use_database(input("database name: "))[-1]
+            break
+
+    database = d
+
     while True:
         file = input("Create or choose file where to save the code from your console experience:\n")
 
@@ -327,7 +329,7 @@ def run_program():
                         code_saver(item, file, '\n\n\n')
                         print(add_content_to_table(database, table, *lst_values))
 
-                elif operation[:-1] == ["create" "file"]:
+                elif operation[:-1] == ["create", "file"]:
                     print(create_file(database, operation[-1]))
 
                 elif operation[:-1] == ["write", "in"]:
@@ -344,34 +346,22 @@ def run_program():
                     content.append(text)
 
                     if operation[-1][-1] == ':':
-                        print(write_in_file(database, operation[-1][:-1], content))
+                        print(write_in_file(database, operation[-1][:-1], *content))
 
                     else:
-                        print(write_in_file(database, operation[-1], content))
+                        print(write_in_file(database, operation[-1], *content))
 
-                    code_saver(content, file, '\n\n\n')
+                    code_saver(content[-1], file, '\n\n\n')
 
                 elif operation[0] == "get" and operation[1] == "all":
 
-                    lines = check_table_content(database, operation[1])
-                    print()
-                    [print(line) for line in lines]
-
-                elif operation[0] == "get" and operation[1].isdigit():
-
-                    lines = check_table_content(database, operation[-1], int(operation[1]))
+                    lines = check_table_content(database, operation[-1])
                     print()
                     [print(line) for line in lines]
 
                 elif operation[:-1] == ["get", "file"]:
 
                     lines = check_file_content(database, operation[-1])
-                    print()
-                    [print(line) for line in lines]
-
-                elif operation[:-2] == ["get", "file"]:
-
-                    lines = check_file_content(database, operation[-2], int(operation[-1]))
                     print()
                     [print(line) for line in lines]
 
@@ -388,6 +378,3 @@ def run_program():
                     print(delete_file(database, *operation[2:]))
 
     code_saver('\n// everything bellow is made on new run.', file, '\n')
-
-
-run_program()
