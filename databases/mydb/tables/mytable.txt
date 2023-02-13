@@ -1,3 +1,0 @@
-{'id': 'int', 'name': 'str', 'age': 'int'}
-
-{"'id'": 1, "'name'": 'gosheto', "'age'": 17}
