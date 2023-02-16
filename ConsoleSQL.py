@@ -1,10 +1,108 @@
 import os
 import shutil
+from colorama import Fore
 import errors
 
 
 def documentation():
-    pass
+    return Fore.GREEN + f'''
+Current Functionalities:
+
+- Creating DataBase
+- Using/Changing DataBase
+- Creating Tables and Files
+- Writing in Tables and Files
+- Checking the content of Tables and Files
+- Deleting DataBases, Tables and Files
+- Saves all the code in File.
+
+{Fore.MAGENTA + "All commands can be in upper or lower case!"}
+
+{Fore.GREEN + "1.How to create DataBase:"}
+  - At first, you'll be asked to use or create database, 
+    - if you choose to create database, it'll just ask you for the name.
+  - Otherwise, if you want to create database while working,
+    - Use the current command: CREATE DATABASE DataBaseName
+
+2.How to use/change database:
+ - At first, you'll be asked to use or create database, 
+    - if you choose to use database, it'll just ask you for the name.
+ - Otherwise, if you want to change the database you're working with,
+    - Use the current command: USE DATABASE DataBaseName
+
+3.How to create a table and save information in it:
+ - To create a table, you need to use the main keywords "CREATE TABLE",
+    - And then, the name of the table, containing information about the storage,
+        - Example: TableName(id: int, name: str)
+    - Console command: CREATE TABLE TableName(id: int, name: str, age: float, more...)
+ - To write in table, you can see this Example:
+        
+        {Fore.CYAN + "ADD TableName VALUES ("}
+        (id, name, age, more...)
+        (id, name, age)
+        );
+
+{Fore.GREEN + "4.How to create file and write in it:"}
+ - To create a file, use the following command: CREATE FILE FileName
+ - To write in file, you need to start with the keywords "WRITE IN FileName:",
+    - And then, write whatever you want on every new line.
+    - To stop writing, you need to use ";;;" at the end
+    "WARNING": """The ;;; get also saved in the txt file, so if you don't want them attached to your text,
+            you might write them on new line!
+        """
+ - Write Example:
+        
+        
+        {Fore.CYAN + "WRITE IN FileName:"}
+        Something isn't right.
+        Some Messages!
+        content, content, content,
+        content, content,
+        content,
+        content,
+        content;;;
+
+{Fore.GREEN + "5.How to see the content of my Tables and Files:"}
+ - Use this command for Tables: GET ALL TableName
+ - Use this command for Files: GET FILE FileName
+
+6.How to delete DataBases, Tables and Files:
+ - Delete DataBase/s:
+    
+    {Fore.MAGENTA + "One DataBase:"}
+        FIRST WAY: DROP DB DataBaseName
+        SECOND WAY: DROP DATABASE DataBaseName
+
+    More Than One DataBases:
+        FIRST WAY: DROP DBS FirstDataBaseName SecondDataBaseName ThirdDataBaseName...
+        SECOND WAY: DROP DATABASES FirstDataBaseName SecondDataBaseName ThirdDataBaseName...
+ 
+ {Fore.GREEN + "- Delete Tables:"}
+    
+    {Fore.MAGENTA + "One Table:"}
+        DROP TABLE TableName
+
+    More Than One Table:
+        DROP TABLES FirstTableName SecondTableName ThirdTableName...
+        
+ {Fore.GREEN + "- Delete Files:"}
+     
+     {Fore.MAGENTA + "One File:"}
+        DEL FILE FileName
+
+     More Than One File:
+        DEL FILES FirstFileName SecondFileName ThirdFileName...
+    
+    
+    
+{Fore.LIGHTGREEN_EX + "7.How to save the code?"}
+ - The code is saving by itself in the chosen at the beginning by you file, to change the file
+ you must stop the program and rerun it. The file can be found in the same directory "src/filename"
+ 
+
+Submit issues and questions here: https://github.com/MitkoVtori/Python-ConsoleSQL/issues/new
+
+'''
 
 
 def create_database(database, *args):
@@ -18,9 +116,9 @@ def create_database(database, *args):
         os.mkdir(f"databases/{database}"), os.mkdir(f"databases/{database}/files"), os.mkdir(f"databases/{database}/tables")
 
     except FileExistsError:
-        return "Database already exists"
+        return Fore.WHITE + "Database already exists"
 
-    return f"Database \"{database}\" was created"
+    return Fore.WHITE + f"Database \"{database}\" was created"
 
 
 def use_database(database, *args):
@@ -30,9 +128,9 @@ def use_database(database, *args):
     '''
 
     if os.path.exists(f"databases/{database}/"):
-        return [f"Currently working with database \"{database}\"", database]
+        return [Fore.WHITE + f"Currently working with database \"{database}\"", database]
 
-    raise errors.DataBaseNotFoundError(f"Database \"{database}\" not found!")
+    raise errors.DataBaseNotFoundError(Fore.WHITE + f"Database \"{database}\" not found!")
 
 
 def create_table(database, table, values, *args):
@@ -42,13 +140,13 @@ def create_table(database, table, values, *args):
     '''
 
     if os.path.exists(f"databases/{database}/tables/{table}.txt"):
-        return f"Table already exists!"
+        return Fore.WHITE + f"Table already exists!"
 
     table = open(f"databases/{database}/tables/{table}.txt", "a+")
     table.write(f"{values}\n\n")
     table.close()
 
-    return f"Table \"{table}\" was created!"
+    return Fore.WHITE + f"Table \"{table}\" was created!"
 
 
 def add_content_to_table(database, table, *content):
@@ -96,7 +194,7 @@ def add_content_to_table(database, table, *content):
     except Exception as e:
         raise e
 
-    return "Content added to table!"
+    return Fore.WHITE + "Content added to table!"
 
 
 def create_file(database, file_name):
@@ -106,12 +204,12 @@ def create_file(database, file_name):
     '''
 
     if os.path.exists(f"databases/{database}/files/{file_name}.txt"):
-        return "File already exists"
+        return Fore.WHITE + "File already exists"
 
     file = open(f"databases/{database}/files/{file_name}.txt", 'x')
     file.close()
 
-    return f"File \"{file_name}\" was created!"
+    return Fore.WHITE + f"File \"{file_name}\" was created!"
 
 
 def write_in_file(database, file, *content):
@@ -132,9 +230,9 @@ def write_in_file(database, file, *content):
             for line in content:
                 f.write(f"{line}\n")
 
-        return "Content added to file!"
+        return Fore.WHITE + "Content added to file!"
 
-    return f"Database \"{database}\" or File \"{file}\" not found!"
+    return Fore.WHITE + f"Database \"{database}\" or File \"{file}\" not found!"
 
 
 def check_table_content(database, table, *args):
@@ -146,9 +244,9 @@ def check_table_content(database, table, *args):
     if os.path.exists(f"databases/{database}/tables/{table}.txt"):
         file = open(f"databases/{database}/tables/{table}.txt", "r")
 
-        return [line for line in file][2:]
+        return [Fore.WHITE + line for line in file][2:]
 
-    print("Table not found!")
+    print(Fore.WHITE + "Table not found!")
     return []
 
 
@@ -161,7 +259,7 @@ def check_file_content(database, file_name, *border):
     if os.path.exists(f"databases/{database}/files/{file_name}.txt"):
         file = open(f"databases/{database}/files/{file_name}.txt", "r")
 
-        return [line for line in file]
+        return [Fore.WHITE + line for line in file]
 
     print("File not found!")
     return []
@@ -184,7 +282,7 @@ def drop_database(*databases):
         if os.path.exists(f"databases/{db}/"):
             shutil.rmtree(f"databases/{db}/")
 
-    return "Database/s dropped!"
+    return Fore.WHITE + "Database/s dropped!"
 
 
 def drop_table(database, *tables):
@@ -202,7 +300,7 @@ def drop_table(database, *tables):
         if os.path.exists(f"databases/{database}/tables/{table}.txt"):
             os.remove(f"databases/{database}/tables/{table}.txt")
 
-    return "Table/s dropped!"
+    return Fore.WHITE + "Table/s dropped!"
 
 
 def delete_file(database, *files):
@@ -210,7 +308,7 @@ def delete_file(database, *files):
             Console command
 
             One File:
-                DEL FILE TableName
+                DEL FILE FileName
 
             More Than One File:
                 DEL FILES FirstFileName SecondFileName ThirdFileName...
@@ -220,7 +318,7 @@ def delete_file(database, *files):
         if os.path.exists(f"databases/{database}/files/{file}.txt"):
             os.remove(f"databases/{database}/files/{file}.txt")
 
-    return "File/s deleted!"
+    return Fore.WHITE + "File/s deleted!"
 
 
 def code_saver(user_input, code_file, new_line):
@@ -234,23 +332,28 @@ def code_saver(user_input, code_file, new_line):
 
 
 def run_program():
+    see_documentation = input(Fore.WHITE + "Wanna see the documentation? 'yes' or 'no': ")
+
+    if see_documentation.lower() == "yes":
+        print(documentation())
+
     while True:
-        db = input("create or use database: ")
+        db = input(Fore.WHITE + "create or use database: ")
 
         if db == 'create':
-            create_db = input("database name: ")
+            create_db = input(Fore.WHITE + "database name: ")
             create_database(create_db)
             d = use_database(create_db)
             break
 
         elif db == "use":
-            d = use_database(input("database name: "))[-1]
+            d = use_database(input(Fore.WHITE + "database name: "))[-1]
             break
 
     database = d
 
     while True:
-        file = input("Create or choose file where to save the code from your console experience:\n")
+        file = input(Fore.WHITE + "Create or choose file where to save the code from your console experience:\n")
 
         if not os.path.exists(f"src/{file}.txt"):
             f = open(f"src/{file}.txt", "x")
@@ -264,15 +367,17 @@ def run_program():
     while True:
 
         operation_code = input()
-        operation = operation_code.lower().split()
-
-        code_saver(operation_code, file, '\n')
 
         if operation_code == "END":
             break
 
         if operation_code == "docs":
-            print(documentation().__doc__())
+            print(documentation())
+            continue
+
+        operation = operation_code.lower().split()
+
+        code_saver(operation_code, file, '\n')
 
         if len(operation) >= 3:
             if operation[-1]:
