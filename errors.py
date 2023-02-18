@@ -4,3 +4,7 @@ class DataBaseNotFoundError(Exception):
 
 class ItemValueDifferentThanTheSetValue(Exception):
     pass
+
+
+class InvalidLineError(Exception):
+    pass
