@@ -7,11 +7,16 @@ Current Functionalities:
 
 - Creating DataBase
 - Using/Changing DataBase
-- Creating Tables and Files
+- Creating Tables, Files and Queues
 - Writing in Tables and Files
-- Checking the content of Tables and Files
-- Deleting DataBases, Tables and Files
+- Adding elements to Queues
+- Checking the content of Tables, Files and Queues
+- Deleting content from Tables, Files and Queues
+- Deleting DataBases, Tables, Files and Queues
+
+- Can be used in python files.
 - Saves all the code in File.
+
 
 {Fore.MAGENTA + "All commands can be in upper or lower case!"}
 
@@ -58,15 +63,43 @@ Current Functionalities:
         content
         ;;;
 
-{Fore.GREEN + "5.How to see the content of my Tables and Files:"}
+{Fore.GREEN + "5.How to create Queue:"}
+ - To create queue, you must use one of the following commands:
+
+        {Fore.MAGENTA + "CREATE QUEUE QueueName"}
+
+        or
+
+        CREATE QUE QueueName
+
+        or
+
+        CREATE Q QueueName
+
+ {Fore.RED + '"NOTE!" You cannot remove any element from queue, every time you try to remove element, it will remove only the first one!'}
+
+{Fore.GREEN + "6.How to add elements to queue:"}
+ - To add elements in THE END of the queue, you should use this command:
+    
+    {Fore.LIGHTMAGENTA_EX + "ADD TO QueueName firstItem secondItem thirdItem"}
+
+{Fore.GREEN + "7.How to remove element from queue:"}
+ - Use this command:
+ 
+    REMOVE FROM QueueName
+ 
+ {Fore.RED + '"NOTE!" You can only remove the first element in the queue!'}
+
+{Fore.GREEN + "8.How to see the content of my Tables, Files and Queues:"}
  - Use this command for Tables: GET ALL TableName
  - Use this command for Files: GET FILE FileName
+ - Use this command for Queues: GET QueueName
 
-6.How to delete content from files/tables:
+9.How to delete content from files/tables:
  - Use this command for Tables: DEL TABLE TableName LINES firstline secondline seventhline
  - Use this command for Files: DEL FILE FileName LINES firstline secondline seventhline
 
-7.How to delete DataBases, Tables and Files:
+10.How to delete DataBases, Tables, Files and Queues:
  - Delete DataBase/s:
 
     {Fore.MAGENTA + "One DataBase:"}
@@ -93,9 +126,20 @@ Current Functionalities:
      More Than One File:
         DEL FILES FirstFileName SecondFileName ThirdFileName...
 
+ {Fore.GREEN + "- Delete Queues:"}
+ 
+    {Fore.MAGENTA + "One Queue:"}
+        DEL QUEUE QueueName
+
+    More Than One Queue:
+        DEL QUEUES FirstQueueName SecondQueueName ThirdQueueName...
 
 
-{Fore.LIGHTGREEN_EX + "8.How to save the code?"}
+{Fore.LIGHTGREEN_EX + "11.How to use the ConsoleSQL in Python code?"}
+ - You can simply, just import the ConsoleSQL file and call the functions.
+ For example, see the test_usages/ folder.
+
+{Fore.LIGHTGREEN_EX + "12.How to save the code?"}
  - The code is saving by itself in the chosen at the beginning by you file, to change the file
  you must stop the program and rerun it. The file can be found in the same directory "src/filename"
 
