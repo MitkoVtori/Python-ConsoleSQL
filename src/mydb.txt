@@ -67,3 +67,11 @@ ADD testtable VALUES (
 DEL TABLE testtable LINES 1 3 5
 GET ALL testtable
 GET FILE testfile
+
+CREATE QUEUE resturant
+ADD TO resturant client1 client2 client3 client4 client5
+ADD TO resturant client6
+REMOVE FROM resturant
+GET resturant
+CREATE QUEUE deletble
+DEL QUEUE deletble
