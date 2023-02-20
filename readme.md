@@ -1,8 +1,8 @@
 # Python-ConsoleSQL
 This is an SQL for Python console. It can be used in code too.
 
-### [Download Guide](Download-guide)
-### [Documentation](Documentation)
+### [Download Guide](#Download-guide)
+### [Documentation](#Documentation)
 
 
 # Download-guide
