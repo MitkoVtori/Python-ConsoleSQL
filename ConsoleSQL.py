@@ -13,7 +13,7 @@ def create_database(database, *args):
 
     try:
 
-        os.mkdir(f"databases/{database}"), os.mkdir(f"databases/{database}/files"), os.mkdir(f"databases/{database}/tables")
+        os.mkdir(f"databases/{database}"), os.mkdir(f"databases/{database}/files"), os.mkdir(f"databases/{database}/tables"), os.mkdir(f"databases/{database}/queues")
 
     except FileExistsError:
         return Fore.LIGHTWHITE_EX + "Database already exists"
@@ -138,6 +138,69 @@ def write_in_file(database, file, *content):
     return Fore.LIGHTWHITE_EX + f"Database \"{database}\" or File \"{file}\" not found!"
 
 
+def create_queue(database, queue_file_name, *args):
+    '''
+        Console command
+
+        CREATE QUEUE QueueName
+
+        or
+
+        CREATE QUE QueueName
+
+        or
+
+        CREATE Q QueueName
+    '''
+
+    if os.path.exists(f"databases/{database}/queues/{queue_file_name}.txt"):
+        return Fore.LIGHTWHITE_EX + "Queue already exists"
+
+    file = open(f"databases/{database}/queues/{queue_file_name}.txt", 'x')
+    file.close()
+
+    return Fore.LIGHTWHITE_EX + f"Queue \"{queue_file_name}\" was created!"
+
+
+def add_to_queue(database, queue, *items):
+    '''
+        Console command
+        ADD TO QueueName firstItem secondItem thirdItem
+    '''
+
+    if os.path.exists(f"databases/{database}/queues/{queue}.txt"):
+        with open(f"databases/{database}/queues/{queue}.txt", "a+") as q:
+            for item in items:
+                q.write(f"{item}\n")
+
+        return Fore.LIGHTWHITE_EX + "Items added to queue!"
+
+    return Fore.LIGHTWHITE_EX + f"Database \"{database}\" or Queue \"{queue}\" not found!"
+
+
+def remove_from_queue(database, queue, *args):
+    '''
+        Console command
+        REMOVE FROM QueueName
+    '''
+
+    if os.path.exists(f"databases/{database}/queues/{queue}.txt"):
+
+        q = [item for item in open(f"databases/{database}/queues/{queue}.txt", "r")][1:]
+
+        os.remove(f"databases/{database}/queues/{queue}.txt")
+        f = open(f"databases/{database}/queues/{queue}.txt", "a+")
+
+        for item in q:
+            f.write(f"{item}")
+
+        f.close()
+
+        return "First element from queue removed!"
+
+    return f"Queue \"{queue}\" not found!"
+
+
 def check_table_content(database, table, *args):
     '''
         Console command
@@ -166,6 +229,19 @@ def check_file_content(database, file_name, *border):
 
     print(Fore.LIGHTWHITE_EX + "File not found!")
     return []
+
+
+def check_queue_content(database, queue, *args):
+    '''
+        Console command
+        GET QueueName
+    '''
+
+    if os.path.exists(f"databases/{database}/queues/{queue}.txt"):
+        q = [line for line in open(f"databases/{database}/queues/{queue}.txt", "r")]
+        return ', '.join(q)
+
+    return f"Queue {queue} not found!"
 
 
 def delete_lines(database, path, file_name, *lines):
@@ -271,6 +347,24 @@ def delete_file(database, *files):
     return Fore.LIGHTWHITE_EX + "File/s deleted!"
 
 
+def delete_queue(database, *queues):
+    '''
+        Console command
+
+        One Queue:
+            DEL QUEUE QueueName
+
+        More Than One Queue:
+            DEL QUEUES FirstQueueName SecondQueueName ThirdQueueName...
+    '''
+
+    for queue in queues:
+        if os.path.exists(f"databases/{database}/queues/{queue}.txt"):
+            os.remove(f"databases/{database}/queues/{queue}.txt")
+
+    return Fore.LIGHTWHITE_EX + "Queue/s deleted!"
+
+
 def code_saver(user_input, code_file, new_line):
     '''
         Saves the code in the code file.
@@ -329,7 +423,7 @@ def run_program():
 
         code_saver(operation_code, file, '\n')
 
-        if len(operation) >= 3:
+        if len(operation) >= 2:
             if operation[-1]:
 
                 if operation[:-1] == ["create", "database"]:
@@ -406,6 +500,15 @@ def run_program():
 
                     code_saver(text[-3:], file, '\n\n\n')
 
+                elif operation[0] == "create" and (operation[1] == "queue" or operation[1] == "que" or operation[1] == "q"):
+                    print(create_queue(database, operation[-1]))
+
+                elif operation[0] == "add" and operation[1] == "to":
+                    print(add_to_queue(database, operation[2], *operation[3:]))
+
+                elif operation[0] == "remove" and operation[1] == "from":
+                    print(remove_from_queue(database, operation[-1]))
+
                 elif operation[0] == "get" and operation[1] == "all":
 
                     lines = check_table_content(database, operation[-1])
@@ -417,6 +520,9 @@ def run_program():
                     lines = check_file_content(database, operation[-1])
                     print()
                     [print(line) for line in lines]
+
+                elif operation[0] == "get":
+                    print(check_queue_content(database, operation[-1]))
 
                 elif len(operation) >= 5:
                     if operation[0] == "del" and operation[3] == "lines":
@@ -440,3 +546,5 @@ def run_program():
                     if "lines" not in operation:
                         print(delete_file(database, *operation[2:]))
 
+                elif operation[0] == "del" and operation[1] == "queue" or operation[1] == "queues":
+                    print(delete_queue(database, *operation[2:]))
