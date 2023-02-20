@@ -18,7 +18,7 @@ This is an SQL for Python console. It can be used in code too.
 #### Run main.py to start the program.
 
 #### To see the documentation, type "docs" on the console.
-**This what you're gonna see.**
+**This is what you're gonna see.**
 
 ![Screenshot 2023-02-20 104656](https://user-images.githubusercontent.com/112943652/220061875-c2174bdf-adfa-4c63-9c40-0634180d7f21.png)
 ![Screenshot 2023-02-20 104735](https://user-images.githubusercontent.com/112943652/220061869-4544ef81-c73f-47a5-a418-0ac53f21d88a.png)
